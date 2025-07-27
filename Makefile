@@ -1,4 +1,4 @@
-.PHONY: help changelog quick-changelog release tag clean update-addon
+.PHONY: help changelog quick-changelog release tag clean update-addon test-build fix-deps
 
 # Default target
 help:
@@ -8,6 +8,8 @@ help:
 	@echo "  release       - Create new release (version required)"
 	@echo "  tag           - Create git tag (version required)"
 	@echo "  update-addon  - Update add-on in Home Assistant"
+	@echo "  test-build    - Test Docker build locally"
+	@echo "  fix-deps      - Fix Python dependencies"
 	@echo "  clean         - Clean temporary files"
 	@echo ""
 	@echo "Examples:"
@@ -83,4 +85,16 @@ status:
 update-addon:
 	@echo "🔄 Updating add-on in Home Assistant..."
 	@chmod +x scripts/update-addon.sh
-	@./scripts/update-addon.sh 
+	@./scripts/update-addon.sh
+
+# Test Docker build locally
+test-build:
+	@echo "🧪 Testing Docker build..."
+	@chmod +x scripts/test-build.sh
+	@./scripts/test-build.sh
+
+# Fix Python dependencies
+fix-deps:
+	@echo "🔧 Fixing Python dependencies..."
+	@chmod +x scripts/fix-dependencies.sh
+	@./scripts/fix-dependencies.sh 

@@ -1,12 +1,22 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-# Install Python and pip
-RUN apk add --no-cache python3 py3-pip
+# Install Python and required system dependencies
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    gcc \
+    musl-dev \
+    python3-dev \
+    libffi-dev \
+    openssl-dev
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt /
 RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Remove build dependencies to reduce image size
+RUN apk del gcc musl-dev python3-dev libffi-dev openssl-dev
 
 # Copy application files
 COPY app.py /
