@@ -50,6 +50,38 @@ The add-on now includes a web interface that displays:
 
 Access the page via the add-on panel in Home Assistant or directly at `http://your-ha-ip:8099`
 
+## Development
+
+### Changelog Generation
+
+This project includes automated changelog generation tools:
+
+```bash
+# Generate full changelog
+make changelog
+
+# Generate quick changelog
+make quick-changelog
+
+# Create new release
+make release VERSION=0.0.3
+
+# Show available commands
+make help
+```
+
+For detailed information, see [Changelog Guide](docs/CHANGELOG_GUIDE.md).
+
+### Conventional Commits
+
+Use conventional commit messages for better changelog generation:
+
+```bash
+git commit -m "feat: add new feature"
+git commit -m "fix: resolve bug"
+git commit -m "docs: update documentation"
+```
+
 ## Repository Structure
 
 ```
@@ -64,6 +96,15 @@ solarman-statistic-ha/
 │   ├── templates/          # HTML templates
 │   │   └── index.html     # User profile page
 │   └── README_USER_PAGE.md # User page documentation
+├── scripts/                 # Build and release scripts
+│   ├── generate-changelog.sh # Full changelog generator
+│   └── quick-changelog.sh   # Quick changelog generator
+├── docs/                    # Documentation
+│   └── CHANGELOG_GUIDE.md  # Changelog generation guide
+├── .github/workflows/       # GitHub Actions
+│   └── changelog.yml       # Automated changelog workflow
+├── CHANGELOG.md            # Project changelog
+├── Makefile                # Build automation
 ├── README.md               # This file
 └── INSTALL.md              # Detailed installation guide
 ```
