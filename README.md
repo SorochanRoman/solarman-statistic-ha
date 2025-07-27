@@ -7,7 +7,7 @@
 
 ## Description
 
-This Home Assistant add-on allows you to retrieve and analyze statistics from Solarman devices.
+This Home Assistant add-on allows you to retrieve and analyze statistics from Solarman devices. It also includes a user profile page that displays basic system and Home Assistant information.
 
 ## Installation
 
@@ -38,7 +38,17 @@ This Home Assistant add-on allows you to retrieve and analyze statistics from So
 
 1. After installation, click **Start**
 2. The add-on will be running and ready to work
-3. Check the logs for additional information
+3. Access the user profile page through the Home Assistant add-on panel
+4. Check the logs for additional information
+
+### User Profile Page
+
+The add-on now includes a web interface that displays:
+- System information (hostname, OS, uptime, current time)
+- Home Assistant information (version, add-on details)
+- Real-time status updates
+
+Access the page via the add-on panel in Home Assistant or directly at `http://your-ha-ip:8099`
 
 ## Repository Structure
 
@@ -48,7 +58,12 @@ solarman-statistic-ha/
 ├── solarman_statistic/       # Add-on folder
 │   ├── config.yaml          # Add-on configuration
 │   ├── Dockerfile           # Docker image
-│   └── run.sh              # Startup script
+│   ├── run.sh              # Startup script
+│   ├── app.py              # Flask web application
+│   ├── requirements.txt    # Python dependencies
+│   ├── templates/          # HTML templates
+│   │   └── index.html     # User profile page
+│   └── README_USER_PAGE.md # User page documentation
 ├── README.md               # This file
 └── INSTALL.md              # Detailed installation guide
 ```

@@ -3,9 +3,9 @@
 # Log startup
 bashio::log.info "Starting Solarman Statistic Add-on"
 
-# Main logic
-echo "Solarman Statistic HA Add-on is running!"
-echo "Current time: $(date)"
+# Start Flask application
+bashio::log.info "Starting Flask web application"
+python3 /app.py &
 
 # Keep the add-on running
 bashio::log.info "Add-on started successfully"

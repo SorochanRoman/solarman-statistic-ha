@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solarman Statistic - Інформація про користувача</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #4facfe;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h3::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #4facfe;
+            border-radius: 50%;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-running {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-unknown {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Solarman Statistic</h1>
+            <p>Інформація про систему та користувача</p>
+        </div>
+        
+        <div class="content">
+            <div id="loading" class="loading">
+                <h3>Завантаження інформації...</h3>
+            </div>
+            
+            <div id="error" class="error" style="display: none;">
+                <strong>Помилка:</strong> <span id="error-message"></span>
+            </div>
+            
+            <div id="content" style="display: none;">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>💻 Системна інформація</h3>
+                        <div class="info-item">
+                            <span class="info-label">Хост:</span>
+                            <span class="info-value" id="hostname">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Операційна система:</span>
+                            <span class="info-value" id="os-name">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Час роботи:</span>
+                            <span class="info-value" id="uptime">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Поточний час:</span>
+                            <span class="info-value" id="current-time">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3>🏠 Home Assistant</h3>
+                        <div class="info-item">
+                            <span class="info-label">Версія HA:</span>
+                            <span class="info-value" id="ha-version">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Назва додатку:</span>
+                            <span class="info-value" id="addon-name">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Версія додатку:</span>
+                            <span class="info-value" id="addon-version">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Статус:</span>
+                            <span class="info-value">
+                                <span class="status-badge status-running" id="addon-status">Запущено</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="refresh-btn" onclick="loadUserInfo()">
+                    🔄 Оновити інформацію
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadUserInfo() {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+            const error = document.getElementById('error');
+            
+            loading.style.display = 'block';
+            content.style.display = 'none';
+            error.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/user-info');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Update system info
+                document.getElementById('hostname').textContent = data.system.hostname;
+                document.getElementById('os-name').textContent = data.system.os_name;
+                document.getElementById('uptime').textContent = `${data.system.uptime_hours} годин`;
+                document.getElementById('current-time').textContent = data.system.current_time;
+                
+                // Update HA info
+                document.getElementById('ha-version').textContent = data.home_assistant.ha_version;
+                document.getElementById('addon-name').textContent = data.home_assistant.addon_info.name;
+                document.getElementById('addon-version').textContent = data.home_assistant.addon_info.version;
+                
+                const statusBadge = document.getElementById('addon-status');
+                if (data.addon_status === 'running') {
+                    statusBadge.textContent = 'Запущено';
+                    statusBadge.className = 'status-badge status-running';
+                } else {
+                    statusBadge.textContent = 'Не запущено';
+                    statusBadge.className = 'status-badge status-unknown';
+                }
+                
+                loading.style.display = 'none';
+                content.style.display = 'block';
+                
+            } catch (err) {
+                console.error('Error loading user info:', err);
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                document.getElementById('error-message').textContent = err.message;
+            }
+        }
+        
+        // Load info on page load
+        document.addEventListener('DOMContentLoaded', loadUserInfo);
+        
+        // Auto-refresh every 30 seconds
+        setInterval(loadUserInfo, 30000);
+    </script>
+</body>
+</html> 
