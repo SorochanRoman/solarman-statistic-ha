@@ -1,6 +1,6 @@
 name: "Solarman Statistic"
 description: "Add-on for Solarman statistics"
-version: "0.0.1"
+version: "0.0.2"
 slug: "solarman_statistic"
 url: "https://github.com/SorochanRoman/solarman-statistic-ha"
 arch:
