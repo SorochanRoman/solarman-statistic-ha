@@ -1,4 +1,4 @@
-.PHONY: help changelog quick-changelog release tag clean update-addon test-build fix-deps
+.PHONY: help changelog quick-changelog release tag clean update-addon test-build fix-deps update-changelog
 
 # Default target
 help:
@@ -10,6 +10,7 @@ help:
 	@echo "  update-addon  - Update add-on in Home Assistant"
 	@echo "  test-build    - Test Docker build locally"
 	@echo "  fix-deps      - Fix Python dependencies"
+	@echo "  update-changelog - Update changelog in config.yaml"
 	@echo "  clean         - Clean temporary files"
 	@echo ""
 	@echo "Examples:"
@@ -97,4 +98,10 @@ test-build:
 fix-deps:
 	@echo "🔧 Fixing Python dependencies..."
 	@chmod +x scripts/fix-dependencies.sh
-	@./scripts/fix-dependencies.sh 
+	@./scripts/fix-dependencies.sh
+
+# Update changelog in config.yaml
+update-changelog:
+	@echo "📝 Updating changelog in config.yaml..."
+	@chmod +x scripts/update-changelog.sh
+	@./scripts/update-changelog.sh 
