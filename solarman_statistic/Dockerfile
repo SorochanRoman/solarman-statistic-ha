@@ -13,7 +13,7 @@ RUN apk add --no-cache \
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt /
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 # Remove build dependencies to reduce image size
 RUN apk del gcc musl-dev python3-dev libffi-dev openssl-dev
