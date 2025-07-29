@@ -1,6 +1,6 @@
 name: "Solarman Statistic"
 description: "Add-on for Solarman statistics with user profile page"
-version: "0.0.6"
+version: "0.0.7"
 slug: "solarman_statistic"
 url: "https://github.com/SorochanRoman/solarman-statistic-ha"
 arch:
@@ -14,4 +14,6 @@ init: false
 panel_icon: mdi:chart-line
 panel_title: "Solarman Statistic"
 panel_admin: false
+ingress: true
+ingress_port: 8099
 changelog: "Fix Docker build issue with externally managed Python environment"

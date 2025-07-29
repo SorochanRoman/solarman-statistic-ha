@@ -6,8 +6,16 @@ Solarman Statistic HA Add-on Web Application
 import os
 import json
 import subprocess
+import logging
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
+
+# Налаштування логування
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -36,7 +44,7 @@ def get_system_info():
             'current_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
     except Exception as e:
-        print(f"Error getting system info: {e}")
+        logger.error(f"Error getting system info: {e}")
         return {
             'hostname': 'Unknown',
             'os_name': 'Unknown',
@@ -62,7 +70,7 @@ def get_home_assistant_info():
             'addon_info': addon_info
         }
     except Exception as e:
-        print(f"Error getting HA info: {e}")
+        logger.error(f"Error getting HA info: {e}")
         return {
             'ha_version': 'Unknown',
             'addon_info': {
@@ -75,11 +83,13 @@ def get_home_assistant_info():
 @app.route('/')
 def index():
     """Main page with user information"""
+    logger.info("Main page requested")
     return render_template('index.html')
 
 @app.route('/api/user-info')
 def user_info():
     """API endpoint for user information"""
+    logger.info("User info API requested")
     system_info = get_system_info()
     ha_info = get_home_assistant_info()
     
@@ -95,8 +105,9 @@ def user_info():
 @app.route('/api/health')
 def health():
     """Health check endpoint"""
+    logger.info("Health check requested")
     return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
 
 if __name__ == '__main__':
-    print("Starting Solarman Statistic Web Application")
+    logger.info("Starting Solarman Statistic Web Application")
     app.run(host='0.0.0.0', port=8099, debug=False) 
