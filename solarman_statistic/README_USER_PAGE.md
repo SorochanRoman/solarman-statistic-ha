@@ -1,36 +1,36 @@
-# Сторінка інформації про користувача
+# User Information Page
 
-## Опис
+## Description
 
-Додано нову функціональність до Solarman Statistic add-on - веб-сторінку з базовою інформацією про користувача та систему.
+Added new functionality to Solarman Statistic add-on - a web page with basic user and system information.
 
-## Функції
+## Features
 
-### Системна інформація
-- **Хост**: назва комп'ютера/сервера
-- **Операційна система**: інформація про ОС
-- **Час роботи**: скільки годин працює система
-- **Поточний час**: актуальний час сервера
+### System Information
+- **Host**: computer/server name
+- **Operating System**: OS information
+- **Uptime**: how many hours the system has been running
+- **Current Time**: actual server time
 
-### Home Assistant інформація
-- **Версія HA**: версія Home Assistant
-- **Назва додатку**: Solarman Statistic
-- **Версія додатку**: поточна версія
-- **Статус**: чи запущений додаток
+### Home Assistant Information
+- **HA Version**: Home Assistant version
+- **Add-on Name**: Solarman Statistic
+- **Add-on Version**: current version
+- **Status**: whether the add-on is running
 
-## Доступ
+## Access
 
-Після встановлення та запуску add-on, сторінка буде доступна через:
+After installing and starting the add-on, the page will be available through:
 
-1. **Home Assistant панель**: знайдіть "Solarman Statistic" в списку додатків
-2. **Прямий доступ**: `http://your-ha-ip:8099`
+1. **Home Assistant Panel**: find "Solarman Statistic" in the add-ons list
+2. **Direct Access**: `http://your-ha-ip:8099`
 
 ## API Endpoints
 
 ### GET /api/user-info
-Повертає JSON з інформацією про користувача та систему.
+Returns JSON with user and system information.
 
-**Приклад відповіді:**
+**Response example:**
 ```json
 {
   "system": {
@@ -53,9 +53,9 @@
 ```
 
 ### GET /api/health
-Health check endpoint для моніторингу.
+Health check endpoint for monitoring.
 
-**Приклад відповіді:**
+**Response example:**
 ```json
 {
   "status": "healthy",
@@ -63,32 +63,32 @@ Health check endpoint для моніторингу.
 }
 ```
 
-## Особливості
+## Features
 
-- **Автооновлення**: інформація оновлюється кожні 30 секунд
-- **Адаптивний дизайн**: працює на мобільних пристроях
-- **Сучасний UI**: градієнти та анімації
-- **Українська локалізація**: інтерфейс українською мовою
+- **Auto-refresh**: information updates every 30 seconds
+- **Responsive Design**: works on mobile devices
+- **Modern UI**: gradients and animations
+- **English Localization**: interface in English language
 
-## Технічні деталі
+## Technical Details
 
-- **Веб-сервер**: Flask (Python)
-- **Порт**: 8099
-- **Мови**: HTML, CSS, JavaScript
-- **Стилі**: CSS Grid, Flexbox, градієнти
+- **Web Server**: Flask (Python)
+- **Port**: 8099
+- **Languages**: HTML, CSS, JavaScript
+- **Styles**: CSS Grid, Flexbox, gradients
 
-## Розробка
+## Development
 
-Для додавання нових функцій:
+To add new features:
 
-1. Оновіть `app.py` для нових API endpoints
-2. Модифікуйте `templates/index.html` для UI змін
-3. Оновіть версію в `config.yaml`
-4. Перебудуйте Docker образ
+1. Update `app.py` for new API endpoints
+2. Modify `templates/index.html` for UI changes
+3. Update version in `config.yaml`
+4. Rebuild Docker image
 
-## Логування
+## Logging
 
-Всі помилки та важливі події логуються через:
+All errors and important events are logged through:
 - Flask application logs
 - Home Assistant add-on logs
-- System logs (через bashio) 
+- System logs (via bashio) 

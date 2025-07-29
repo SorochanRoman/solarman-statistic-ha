@@ -1,65 +1,65 @@
 # Changelog Troubleshooting Guide
 
-Цей гайд допоможе вирішити проблеми з changelog в Home Assistant add-ons.
+This guide will help you resolve changelog issues in Home Assistant add-ons.
 
-## 🚨 Поширені помилки
+## 🚨 Common Errors
 
 ### 1. **"No changelog found for add-on"**
 
-**Причина:** Home Assistant не може знайти changelog для add-on.
+**Cause:** Home Assistant cannot find changelog for the add-on.
 
-**Рішення:**
+**Solution:**
 ```bash
-# Додати changelog до config.yaml
+# Add changelog to config.yaml
 make update-changelog
 
-# Або вручну додати в config.yaml
+# Or manually add to config.yaml
 changelog: "Add user profile page with system information display"
 ```
 
 ### 2. **"Changelog is empty or invalid"**
 
-**Причина:** Changelog має неправильний формат або порожній.
+**Cause:** Changelog has incorrect format or is empty.
 
-**Рішення:**
+**Solution:**
 ```bash
-# Оновити changelog з git комітів
+# Update changelog from git commits
 ./scripts/update-changelog.sh --git
 
-# Або створити вручну
+# Or create manually
 echo 'changelog: "Add new features and improvements"' >> solarman_statistic/config.yaml
 ```
 
 ### 3. **"Changelog not showing in Home Assistant"**
 
-**Причина:** Home Assistant не оновлює інформацію про add-on.
+**Cause:** Home Assistant doesn't update add-on information.
 
-**Рішення:**
+**Solution:**
 ```bash
-# Оновити репозиторій в HA
+# Update repository in HA
 ha addons repositories reload
 
-# Перезапустити add-on
+# Restart add-on
 ha addons restart local_solarman_statistic
 ```
 
-## 🔧 Інструменти для вирішення проблем
+## 🔧 Troubleshooting Tools
 
-### **Автоматичне виправлення:**
+### **Automatic Fix:**
 ```bash
-# Оновити changelog автоматично
+# Update changelog automatically
 make update-changelog
 
-# Показати поточний changelog
+# Show current changelog
 ./scripts/update-changelog.sh --show
 
-# Створити changelog з git комітів
+# Create changelog from git commits
 ./scripts/update-changelog.sh --git
 ```
 
-### **Ручне виправлення:**
+### **Manual Fix:**
 
-#### 1. **Додати changelog до config.yaml:**
+#### 1. **Add changelog to config.yaml:**
 ```yaml
 name: "Solarman Statistic"
 description: "Add-on for Solarman statistics with user profile page"
@@ -69,7 +69,7 @@ url: "https://github.com/SorochanRoman/solarman-statistic-ha"
 changelog: "Add user profile page with system information display"
 ```
 
-#### 2. **Створити CHANGELOG.md файл:**
+#### 2. **Create CHANGELOG.md file:**
 ```markdown
 # Changelog for Solarman Statistic Add-on
 

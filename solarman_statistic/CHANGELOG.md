@@ -7,7 +7,7 @@
 - ✨ **Flask Web Application**: Modern web server with REST API
 - ✨ **Real-time Updates**: Auto-refresh system information every 30 seconds
 - ✨ **Responsive Design**: Mobile-friendly interface with modern UI
-- ✨ **Ukrainian Localization**: Interface in Ukrainian language
+- ✨ **English Localization**: Interface in English language
 - ✨ **System Information**: Hostname, OS, uptime, current time
 - ✨ **Home Assistant Info**: HA version, add-on details, status
 - 📚 **API Endpoints**: `/api/user-info` and `/api/health`
@@ -49,7 +49,7 @@
 ### Added
 - ✨ **User Profile Page**: Web interface with system information
 - ✨ **Flask Application**: Python web server with API endpoints
-- ✨ **Modern UI**: Responsive design with Ukrainian localization
+- ✨ **Modern UI**: Responsive design with English localization
 - 📚 **API Documentation**: REST API with health check endpoints
 - 🔧 **Python Dependencies**: Flask and Werkzeug packages
 
@@ -62,7 +62,7 @@
 - **Port**: 8099 for web interface
 - **API**: `/api/user-info` and `/api/health` endpoints
 - **Auto-refresh**: 30-second update intervals
-- **Languages**: Ukrainian interface
+- **Languages**: English interface
 
 ---
 

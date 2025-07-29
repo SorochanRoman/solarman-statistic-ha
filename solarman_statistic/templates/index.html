@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solarman Statistic - Інформація про користувача</title>
+    <title>Solarman Statistic - User Information</title>
     <style>
         * {
             margin: 0;
@@ -179,36 +179,36 @@
     <div class="container">
         <div class="header">
             <h1>🔍 Solarman Statistic</h1>
-            <p>Інформація про систему та користувача</p>
+            <p>System and user information</p>
         </div>
         
         <div class="content">
             <div id="loading" class="loading">
-                <h3>Завантаження інформації...</h3>
+                <h3>Loading information...</h3>
             </div>
             
             <div id="error" class="error" style="display: none;">
-                <strong>Помилка:</strong> <span id="error-message"></span>
+                <strong>Error:</strong> <span id="error-message"></span>
             </div>
             
             <div id="content" style="display: none;">
                 <div class="info-grid">
                     <div class="info-card">
-                        <h3>💻 Системна інформація</h3>
+                        <h3>💻 System Information</h3>
                         <div class="info-item">
-                            <span class="info-label">Хост:</span>
+                            <span class="info-label">Host:</span>
                             <span class="info-value" id="hostname">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Операційна система:</span>
+                            <span class="info-label">Operating System:</span>
                             <span class="info-value" id="os-name">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Час роботи:</span>
+                            <span class="info-label">Uptime:</span>
                             <span class="info-value" id="uptime">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Поточний час:</span>
+                            <span class="info-label">Current Time:</span>
                             <span class="info-value" id="current-time">-</span>
                         </div>
                     </div>
@@ -216,28 +216,28 @@
                     <div class="info-card">
                         <h3>🏠 Home Assistant</h3>
                         <div class="info-item">
-                            <span class="info-label">Версія HA:</span>
+                            <span class="info-label">HA Version:</span>
                             <span class="info-value" id="ha-version">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Назва додатку:</span>
+                            <span class="info-label">Add-on Name:</span>
                             <span class="info-value" id="addon-name">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Версія додатку:</span>
+                            <span class="info-label">Add-on Version:</span>
                             <span class="info-value" id="addon-version">-</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Статус:</span>
+                            <span class="info-label">Status:</span>
                             <span class="info-value">
-                                <span class="status-badge status-running" id="addon-status">Запущено</span>
+                                <span class="status-badge status-running" id="addon-status">Running</span>
                             </span>
                         </div>
                     </div>
                 </div>
                 
                 <button class="refresh-btn" onclick="loadUserInfo()">
-                    🔄 Оновити інформацію
+                    🔄 Refresh Information
                 </button>
             </div>
         </div>
@@ -264,7 +264,7 @@
                 // Update system info
                 document.getElementById('hostname').textContent = data.system.hostname;
                 document.getElementById('os-name').textContent = data.system.os_name;
-                document.getElementById('uptime').textContent = `${data.system.uptime_hours} годин`;
+                document.getElementById('uptime').textContent = `${data.system.uptime_hours} hours`;
                 document.getElementById('current-time').textContent = data.system.current_time;
                 
                 // Update HA info
@@ -274,10 +274,10 @@
                 
                 const statusBadge = document.getElementById('addon-status');
                 if (data.addon_status === 'running') {
-                    statusBadge.textContent = 'Запущено';
+                    statusBadge.textContent = 'Running';
                     statusBadge.className = 'status-badge status-running';
                 } else {
-                    statusBadge.textContent = 'Не запущено';
+                    statusBadge.textContent = 'Not Running';
                     statusBadge.className = 'status-badge status-unknown';
                 }
                 

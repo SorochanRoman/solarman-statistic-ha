@@ -1,138 +1,138 @@
 # Changelog Generation Guide
 
-Цей гайд пояснює, як генерувати changelog для проекту Solarman Statistic HA Add-on.
+This guide explains how to generate changelog for the Solarman Statistic HA Add-on project.
 
-## 📋 Що таке Changelog?
+## 📋 What is Changelog?
 
-Changelog - це документ, який записує всі важливі зміни в проекті для кожної версії. Він допомагає користувачам та розробникам розуміти, що змінилося між версіями.
+Changelog is a document that records all important changes in the project for each version. It helps users and developers understand what has changed between versions.
 
-## 🛠️ Способи генерації
+## 🛠️ Generation Methods
 
-### 1. Автоматичний changelog (рекомендований)
+### 1. Automatic changelog (recommended)
 
 ```bash
-# Запустити повний генератор
+# Run full generator
 ./scripts/generate-changelog.sh
 ```
 
-**Особливості:**
-- Автоматично категорує коміти за типами
-- Підтримує conventional commits
-- Створює красиве форматування з емодзі
-- Зберігає історію версій
+**Features:**
+- Automatically categorizes commits by type
+- Supports conventional commits
+- Creates beautiful formatting with emojis
+- Preserves version history
 
-### 2. Швидкий changelog
+### 2. Quick changelog
 
 ```bash
-# Простий список комітів
+# Simple commit list
 ./scripts/quick-changelog.sh
 
-# З вказаною версією та датою
+# With specified version and date
 ./scripts/quick-changelog.sh 0.0.3 2024-01-16
 ```
 
-### 3. Ручне створення
+### 3. Manual creation
 
 ```bash
-# Подивитися коміти
+# View commits
 git log --oneline
 
-# Подивитися зміни між тегами
+# View changes between tags
 git log --oneline v0.0.1..v0.0.2
 
-# Подивитися зміни в файлах
+# View changes in files
 git diff v0.0.1..v0.0.2
 ```
 
 ## 📝 Conventional Commits
 
-Для кращої автоматизації використовуйте conventional commits:
+For better automation, use conventional commits:
 
 ```bash
-# Типи комітів
-feat:     # Нова функція
-fix:      # Виправлення багу
-docs:     # Документація
-style:    # Форматування коду
-refactor: # Рефакторинг
-test:     # Тести
-chore:    # Обслуговування
+# Commit types
+feat:     # New feature
+fix:      # Bug fix
+docs:     # Documentation
+style:    # Code formatting
+refactor: # Refactoring
+test:     # Tests
+chore:    # Maintenance
 
-# Приклади
+# Examples
 git commit -m "feat: add user profile page"
 git commit -m "fix: resolve Flask import error"
 git commit -m "docs: update installation guide"
 git commit -m "style: improve UI design"
 ```
 
-## 🏷️ Робота з тегами
+## 🏷️ Working with Tags
 
-### Створення тегу для версії
+### Creating a tag for version
 
 ```bash
-# Створити тег
+# Create tag
 git tag v0.0.2
 
-# Створити тег з повідомленням
+# Create tag with message
 git tag -a v0.0.2 -m "Release version 0.0.2"
 
-# Запушити тег
+# Push tag
 git push origin v0.0.2
 ```
 
-### Перегляд тегів
+### Viewing tags
 
 ```bash
-# Список всіх тегів
+# List all tags
 git tag -l
 
-# Детальна інформація про тег
+# Detailed tag information
 git show v0.0.2
 ```
 
-## 📊 Структура Changelog
+## 📊 Changelog Structure
 
 ```markdown
 # Changelog
 
 ## [Unreleased]
-- Майбутні зміни
+- Future changes
 
 ## [0.0.2] - 2024-01-15
 
 ### Added
-- ✨ Нові функції
+- ✨ New features
 
 ### Changed
-- ♻️ Зміни в існуючому функціоналі
+- ♻️ Changes in existing functionality
 
 ### Fixed
-- 🐛 Виправлення багів
+- 🐛 Bug fixes
 
 ### Removed
-- 🗑️ Видалені функції
+- 🗑️ Removed features
 ```
 
-## 🔄 Процес оновлення
+## 🔄 Update Process
 
-1. **Підготувати зміни:**
+1. **Prepare changes:**
    ```bash
    git add .
    git commit -m "feat: add new feature"
    ```
 
-2. **Оновити версію:**
+2. **Update version:**
    ```bash
-   # В solarman_statistic/config.yaml
+   # In solarman_statistic/config.yaml
    version: "0.0.3"
    ```
 
-3. **Згенерувати changelog:**
+3. **Generate changelog:**
    ```bash
    ./scripts/generate-changelog.sh
    ```
 
-4. **Створити тег:**
+4. **Create tag:**
    ```bash
    git tag -a v0.0.3 -m "Release version 0.0.3"
    git push origin v0.0.3
@@ -140,31 +140,31 @@ git show v0.0.2
 
 ## 🎯 Best Practices
 
-### ✅ Рекомендовано
-- Використовувати conventional commits
-- Регулярно оновлювати changelog
-- Додавати детальні описи змін
-- Використовувати емодзі для кращої читабельності
-- Групувати зміни за категоріями
+### ✅ Recommended
+- Use conventional commits
+- Regularly update changelog
+- Add detailed change descriptions
+- Use emojis for better readability
+- Group changes by categories
 
-### ❌ Не рекомендується
-- Ігнорувати changelog
-- Додавати технічні деталі без пояснень
-- Використовувати загальні описи
-- Забувати про версіонування
+### ❌ Not recommended
+- Ignore changelog
+- Add technical details without explanations
+- Use generic descriptions
+- Forget about versioning
 
-## 🛠️ Інструменти
+## 🛠️ Tools
 
-### Автоматичні генератори
-- **conventional-changelog**: npm пакет для автоматичної генерації
-- **git-changelog**: Python інструмент
-- **github-changelog-generator**: Ruby гем
+### Automatic generators
+- **conventional-changelog**: npm package for automatic generation
+- **git-changelog**: Python tool
+- **github-changelog-generator**: Ruby gem
 
-### Ручні інструменти
-- **GitHub Releases**: веб-інтерфейс для створення релізів
-- **GitLab Releases**: аналогічний функціонал в GitLab
+### Manual tools
+- **GitHub Releases**: web interface for creating releases
+- **GitLab Releases**: similar functionality in GitLab
 
-## 📚 Корисні посилання
+## 📚 Useful Links
 
 - [Keep a Changelog](https://keepachangelog.com/)
 - [Conventional Commits](https://www.conventionalcommits.org/)

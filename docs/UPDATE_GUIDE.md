@@ -1,211 +1,211 @@
-# Гайд по оновленню Solarman Statistic Add-on
+# Solarman Statistic Add-on Update Guide
 
-Цей гайд пояснює, як оновити add-on в Home Assistant до нової версії.
+This guide explains how to update the add-on in Home Assistant to a new version.
 
-## 🔄 Процес оновлення
+## 🔄 Update Process
 
-### 1. **Підготовка нової версії**
+### 1. **Preparing New Version**
 
-#### Автоматичний спосіб (рекомендований):
+#### Automatic method (recommended):
 ```bash
-# Створити новий реліз з автоматичним оновленням версії
+# Create new release with automatic version update
 make release VERSION=0.0.3
 
-# Це автоматично:
-# - Оновить версію в config.yaml
-# - Згенерує changelog
-# - Створить git коміт та тег
+# This automatically:
+# - Updates version in config.yaml
+# - Generates changelog
+# - Creates git commit and tag
 ```
 
-#### Ручний спосіб:
+#### Manual method:
 ```bash
-# 1. Оновити версію в config.yaml
+# 1. Update version in config.yaml
 sed -i '' 's/version: "0.0.2"/version: "0.0.3"/' solarman_statistic/config.yaml
 
-# 2. Згенерувати changelog
+# 2. Generate changelog
 make changelog
 
-# 3. Створити коміт
+# 3. Create commit
 git add .
 git commit -m "chore: bump version to 0.0.3"
 
-# 4. Створити тег
+# 4. Create tag
 git tag -a v0.0.3 -m "Release version 0.0.3"
 ```
 
-### 2. **Публікація змін**
+### 2. **Publishing Changes**
 
 ```bash
-# Запушити зміни в репозиторій
+# Push changes to repository
 git push origin main
 git push origin v0.0.3
 ```
 
-### 3. **Оновлення в Home Assistant**
+### 3. **Updating in Home Assistant**
 
-#### Для користувачів:
+#### For Users:
 
-1. **Автоматичне оновлення:**
-   - Home Assistant автоматично перевірить оновлення
-   - З'явиться повідомлення про доступну нову версію
-   - Натисніть "Update" в інтерфейсі add-on
+1. **Automatic update:**
+   - Home Assistant will automatically check for updates
+   - A notification will appear about available new version
+   - Click "Update" in the add-on interface
 
-2. **Ручне оновлення:**
-   - Перейдіть в **Settings** → **Add-ons**
-   - Знайдіть "Solarman Statistic"
-   - Натисніть **Update** якщо доступно
+2. **Manual update:**
+   - Go to **Settings** → **Add-ons**
+   - Find "Solarman Statistic"
+   - Click **Update** if available
 
-3. **Примусове оновлення:**
+3. **Force update:**
    ```bash
-   # В терміналі Home Assistant
+   # In Home Assistant terminal
    ha addons update local_solarman_statistic
    ha addons restart local_solarman_statistic
    ```
 
-#### Для розробників:
+#### For Developers:
 
-1. **Перевірка оновлення:**
+1. **Check for updates:**
    ```bash
-   # Перевірити доступні оновлення
+   # Check available updates
    ha addons update --all
    
-   # Перевірити конкретний add-on
+   # Check specific add-on
    ha addons info local_solarman_statistic
    ```
 
-2. **Оновлення add-on:**
+2. **Update add-on:**
    ```bash
-   # Оновити add-on
+   # Update add-on
    ha addons update local_solarman_statistic
    
-   # Перезапустити add-on
+   # Restart add-on
    ha addons restart local_solarman_statistic
    
-   # Або одною командою
+   # Or in one command
    ha addons update local_solarman_statistic && ha addons restart local_solarman_statistic
    ```
 
-## 🔍 Перевірка оновлення
+## 🔍 Update Verification
 
-### 1. **Перевірка версії в HA:**
-- Перейдіть в **Settings** → **Add-ons** → **Solarman Statistic**
-- Подивіться на версію в заголовку
+### 1. **Check Version in HA:**
+- Go to **Settings** → **Add-ons** → **Solarman Statistic**
+- Look at the version in the header
 
-### 2. **Перевірка через термінал:**
+### 2. **Check via Terminal:**
 ```bash
-# Інформація про add-on
+# Add-on information
 ha addons info local_solarman_statistic
 
-# Логи add-on
+# Add-on logs
 ha addons logs local_solarman_statistic
 ```
 
-### 3. **Перевірка веб-інтерфейсу:**
-- Відкрийте веб-сторінку add-on
-- Перевірте версію в інтерфейсі
+### 3. **Check Web Interface:**
+- Open the add-on web page
+- Check version in the interface
 
-## 🚨 Вирішення проблем
+## 🚨 Troubleshooting
 
-### Add-on не оновлюється:
+### Add-on Won't Update:
 
-1. **Перевірте репозиторій:**
+1. **Check Repository:**
    ```bash
-   # Перевірити налаштування репозиторію
+   # Check repository settings
    ha addons repositories list
    
-   # Оновити репозиторій
+   # Update repository
    ha addons repositories reload
    ```
 
-2. **Примусове оновлення:**
+2. **Force Update:**
    ```bash
-   # Видалити та перевстановити
+   # Remove and reinstall
    ha addons uninstall local_solarman_statistic
    ha addons install local_solarman_statistic
    ```
 
-3. **Перевірка логів:**
+3. **Check Logs:**
    ```bash
-   # Логи Home Assistant
+   # Home Assistant logs
    ha logs
    
-   # Логи add-on
+   # Add-on logs
    ha addons logs local_solarman_statistic
    ```
 
-### Проблеми з веб-інтерфейсом:
+### Web Interface Issues:
 
-1. **Перезапуск add-on:**
+1. **Restart Add-on:**
    ```bash
    ha addons restart local_solarman_statistic
    ```
 
-2. **Перевірка портів:**
+2. **Check Ports:**
    ```bash
-   # Перевірити чи зайнятий порт 8099
+   # Check if port 8099 is occupied
    netstat -tulpn | grep 8099
    ```
 
-3. **Перевірка конфігурації:**
-   - Перевірте файл `config.yaml`
-   - Переконайтеся, що порт 8099 відкритий
+3. **Check Configuration:**
+   - Check `config.yaml` file
+   - Make sure port 8099 is open
 
-## 📋 Чек-лист оновлення
+## 📋 Update Checklist
 
-### Перед оновленням:
-- [ ] Протестовано нову версію локально
-- [ ] Оновлено версію в `config.yaml`
-- [ ] Згенеровано changelog
-- [ ] Створено git тег
-- [ ] Запушено зміни в репозиторій
+### Before Update:
+- [ ] Tested new version locally
+- [ ] Updated version in `config.yaml`
+- [ ] Generated changelog
+- [ ] Created git tag
+- [ ] Pushed changes to repository
 
-### Після оновлення:
-- [ ] Перевірено версію в Home Assistant
-- [ ] Протестовано веб-інтерфейс
-- [ ] Перевірено логи на помилки
-- [ ] Оновлено документацію якщо потрібно
+### After Update:
+- [ ] Verified version in Home Assistant
+- [ ] Tested web interface
+- [ ] Checked logs for errors
+- [ ] Updated documentation if needed
 
-## 🔧 Автоматизація
+## 🔧 Automation
 
 ### GitHub Actions:
-При створенні тегу автоматично:
-- Генерується changelog
-- Створюється GitHub Release
-- Оновлюється документація
+When creating a tag automatically:
+- Changelog is generated
+- GitHub Release is created
+- Documentation is updated
 
-### Makefile команди:
+### Makefile Commands:
 ```bash
-# Повний процес оновлення
+# Full update process
 make release VERSION=0.0.3
 
-# Тільки створення тегу
+# Only create tag
 make tag VERSION=0.0.3
 
-# Генерація changelog
+# Generate changelog
 make changelog
 ```
 
-## 📚 Корисні команди
+## 📚 Useful Commands
 
 ```bash
-# Перевірка статусу
+# Check status
 make status
 
-# Поточна версія
+# Current version
 make version
 
-# Очищення тимчасових файлів
+# Clean temporary files
 make clean
 
-# Швидкий changelog
+# Quick changelog
 make quick-changelog
 ```
 
-## 🆘 Підтримка
+## 🆘 Support
 
-Якщо виникли проблеми з оновленням:
+If you have problems with updating:
 
-1. Перевірте логи: `ha addons logs local_solarman_statistic`
-2. Перезапустіть add-on: `ha addons restart local_solarman_statistic`
-3. Зверніться до документації: [README.md](../README.md)
-4. Створіть issue в репозиторії 
+1. Check logs: `ha addons logs local_solarman_statistic`
+2. Restart add-on: `ha addons restart local_solarman_statistic`
+3. Refer to documentation: [README.md](../README.md)
+4. Create issue in repository 
