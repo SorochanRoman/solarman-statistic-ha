@@ -82,6 +82,30 @@ git commit -m "fix: resolve bug"
 git commit -m "docs: update documentation"
 ```
 
+### Troubleshooting
+
+#### Docker Build Issues
+```bash
+# Fix Python dependencies
+make fix-deps
+
+# Test build locally
+make test-build
+```
+
+#### Changelog Issues
+```bash
+# Update changelog in config.yaml
+make update-changelog
+
+# Show current changelog
+./scripts/update-changelog.sh --show
+```
+
+For detailed troubleshooting guides, see:
+- [Docker Troubleshooting](docs/DOCKER_TROUBLESHOOTING.md)
+- [Changelog Troubleshooting](docs/CHANGELOG_TROUBLESHOOTING.md)
+
 ## Repository Structure
 
 ```
