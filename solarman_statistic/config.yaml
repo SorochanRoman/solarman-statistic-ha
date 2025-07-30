@@ -1,6 +1,6 @@
 name: "Solarman Statistic"
 description: "Add-on for Solarman statistics with user profile page"
-version: "0.0.7"
+version: "0.0.8"
 slug: "solarman_statistic"
 url: "https://github.com/SorochanRoman/solarman-statistic-ha"
 arch:
@@ -18,4 +18,4 @@ ingress: true
 ingress_port: 8099
 homeassistant_api: true
 hassio_api: true
-changelog: "Added Home Assistant entities search and API integration"
+changelog: "Enhanced Home Assistant integration with improved API access and entity search functionality"
