@@ -7,6 +7,7 @@ import os
 import json
 import subprocess
 import logging
+import requests
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 
@@ -18,6 +19,71 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+
+def get_ha_api_url():
+    """Get Home Assistant API URL"""
+    # В додатку Home Assistant API доступний через локальний хост
+    return "http://supervisor/core/api"
+
+def get_ha_token():
+    """Get Home Assistant API token"""
+    # Токен доступний через змінну середовища в додатку
+    return os.environ.get('SUPERVISOR_TOKEN')
+
+def get_entity_data(entity_id):
+    """Get data from Home Assistant entity"""
+    try:
+        token = get_ha_token()
+        api_url = get_ha_api_url()
+        
+        if not token:
+            logger.error("No API token available")
+            return None
+            
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
+        
+        # Отримуємо стан сутності
+        response = requests.get(f'{api_url}/states/{entity_id}', headers=headers)
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.error(f"Failed to get entity {entity_id}: {response.status_code}")
+            return None
+            
+    except Exception as e:
+        logger.error(f"Error getting entity data: {e}")
+        return None
+
+def get_all_entities():
+    """Get all entities from Home Assistant"""
+    try:
+        token = get_ha_token()
+        api_url = get_ha_api_url()
+        
+        if not token:
+            logger.error("No API token available")
+            return []
+            
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
+        
+        response = requests.get(f'{api_url}/states', headers=headers)
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.error(f"Failed to get entities: {response.status_code}")
+            return []
+            
+    except Exception as e:
+        logger.error(f"Error getting all entities: {e}")
+        return []
 
 def get_system_info():
     """Get basic system information"""
@@ -101,6 +167,64 @@ def user_info():
     }
     
     return jsonify(user_info)
+
+@app.route('/api/entity/<entity_id>')
+def get_entity(entity_id):
+    """Get specific entity data"""
+    logger.info(f"Entity data requested for: {entity_id}")
+    data = get_entity_data(entity_id)
+    
+    if data:
+        return jsonify(data)
+    else:
+        return jsonify({'error': 'Entity not found or access denied'}), 404
+
+@app.route('/api/entities')
+def get_entities():
+    """Get all entities"""
+    logger.info("All entities requested")
+    entities = get_all_entities()
+    
+    # Фільтруємо тільки активні сутності
+    active_entities = [entity for entity in entities if entity.get('state') != 'unavailable']
+    
+    return jsonify({
+        'total': len(entities),
+        'active': len(active_entities),
+        'entities': active_entities[:50]  # Обмежуємо до 50 для продуктивності
+    })
+
+@app.route('/api/entities/search')
+def search_entities():
+    """Search entities by domain or name"""
+    query = request.args.get('q', '').lower()
+    domain = request.args.get('domain', '').lower()
+    
+    logger.info(f"Search entities: query={query}, domain={domain}")
+    
+    entities = get_all_entities()
+    results = []
+    
+    for entity in entities:
+        entity_id = entity.get('entity_id', '').lower()
+        friendly_name = entity.get('attributes', {}).get('friendly_name', '').lower()
+        
+        # Фільтруємо за доменом
+        if domain and not entity_id.startswith(domain):
+            continue
+            
+        # Фільтруємо за пошуковим запитом
+        if query and query not in entity_id and query not in friendly_name:
+            continue
+            
+        results.append(entity)
+    
+    return jsonify({
+        'query': query,
+        'domain': domain,
+        'count': len(results),
+        'entities': results[:20]  # Обмежуємо результати
+    })
 
 @app.route('/api/health')
 def health():

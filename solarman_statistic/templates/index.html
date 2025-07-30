@@ -160,6 +160,69 @@
             border-left: 5px solid #dc3545;
         }
 
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            margin-bottom: 15px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .entity-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .entity-item {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .entity-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .entity-item:last-child {
+            border-bottom: none;
+        }
+
+        .entity-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .entity-state {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .entity-domain {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
         @media (max-width: 768px) {
             .content {
                 padding: 20px;
@@ -235,6 +298,16 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="search-section">
+                    <h3>🔍 Search Home Assistant Entities</h3>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search entities (e.g., sensor, light, switch...)">
+                    <div class="entity-list" id="entity-list">
+                        <div style="text-align: center; padding: 20px; color: #666;">
+                            Type to search for entities...
+                        </div>
+                    </div>
+                </div>
                 
                 <button class="refresh-btn" onclick="loadUserInfo()">
                     🔄 Refresh Information
@@ -244,6 +317,8 @@
     </div>
 
     <script>
+        let searchTimeout;
+
         async function loadUserInfo() {
             const loading = document.getElementById('loading');
             const content = document.getElementById('content');
@@ -291,6 +366,80 @@
                 document.getElementById('error-message').textContent = err.message;
             }
         }
+
+        async function searchEntities(query) {
+            try {
+                const response = await fetch(`/api/entities/search?q=${encodeURIComponent(query)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayEntities(data.entities);
+                
+            } catch (err) {
+                console.error('Error searching entities:', err);
+                document.getElementById('entity-list').innerHTML = 
+                    '<div style="text-align: center; padding: 20px; color: #dc3545;">Error loading entities</div>';
+            }
+        }
+
+        function displayEntities(entities) {
+            const entityList = document.getElementById('entity-list');
+            
+            if (entities.length === 0) {
+                entityList.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No entities found</div>';
+                return;
+            }
+            
+            entityList.innerHTML = entities.map(entity => {
+                const domain = entity.entity_id.split('.')[0];
+                const friendlyName = entity.attributes?.friendly_name || entity.entity_id;
+                const state = entity.state;
+                
+                return `
+                    <div class="entity-item" onclick="showEntityDetails('${entity.entity_id}')">
+                        <div class="entity-name">
+                            ${friendlyName}
+                            <span class="entity-domain">${domain}</span>
+                        </div>
+                        <div class="entity-state">${state}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function showEntityDetails(entityId) {
+            try {
+                const response = await fetch(`/api/entity/${encodeURIComponent(entityId)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                alert(`Entity: ${entityId}\nState: ${data.state}\nAttributes: ${JSON.stringify(data.attributes, null, 2)}`);
+                
+            } catch (err) {
+                console.error('Error getting entity details:', err);
+                alert(`Error loading entity details: ${err.message}`);
+            }
+        }
+
+        // Search input handler
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+            
+            if (query.length === 0) {
+                document.getElementById('entity-list').innerHTML = 
+                    '<div style="text-align: center; padding: 20px; color: #666;">Type to search for entities...</div>';
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                searchEntities(query);
+            }, 300);
+        });
         
         // Load info on page load
         document.addEventListener('DOMContentLoaded', loadUserInfo);

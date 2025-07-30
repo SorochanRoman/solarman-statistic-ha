@@ -16,4 +16,6 @@ panel_title: "Solarman Statistic"
 panel_admin: false
 ingress: true
 ingress_port: 8099
-changelog: "Fix Docker build issue with externally managed Python environment"
+homeassistant_api: true
+hassio_api: true
+changelog: "Added Home Assistant entities search and API integration"
